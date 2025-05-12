@@ -2,5 +2,5 @@
 
 int main()
 {
-	// Gameloop
+	srand(time(NULL));
 }
