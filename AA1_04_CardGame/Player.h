@@ -1,6 +1,7 @@
 #pragma once
 #include "Card.h"
 #include <vector>
+#include <algorithm>
 #include <iostream>
 class Player
 {
@@ -19,7 +20,7 @@ private:
 		default: return 0;
 		}
 	}
-	bool GetOrderCards(const Card& card1, const Card& card2) // Returns the card either by suit priority or by value
+	bool GetOrderCards(const Card& card1, const Card& card2) // Returns the card either by suit priority or by highest value
 	{
 		if (GetSuitRank(card1.GetSuit()) != GetSuitRank(card2.GetSuit()))
 			return GetSuitRank(card1.GetSuit()) > GetSuitRank(card2.GetSuit());
@@ -30,6 +31,7 @@ public:
 	{
 		// it is incremented until the position is end()
 		auto it = m_hand.begin();
+		// Compares the card at that position with the card referenced as a parameter, and checks which one is of highest value
 		while (it != m_hand.end() && GetOrderCards(*it, card))
 		{
 			++it;
@@ -39,20 +41,27 @@ public:
 	}
 	Card GetCard() const // Returns random card
 	{
-		if (!m_hand.empty())
-		{
-			// Generates a random position, and returns the cards in that position
-			int randomCardIndex = rand() % m_hand.size();
-			return m_hand[randomCardIndex];
-		}
+		auto it = m_hand.begin();
+		int randomCardIndex = rand() % m_hand.size();
+		// Moves iterator until it reaches the randomCardIndex position, the returns the value
+		std::advance(it, randomCardIndex);
+		return *it;
 	}
 	Card GetCard(const Suit& suit) // Returns the card with highest value of said suit
 	{
-		for (int i = 0;i < m_hand.size();i++)
+		// Goes through each element of the vector
+		// Option 1
+		for (auto it = 0;it < m_hand.size();++it)
 		{
-			if (m_hand[i].GetSuit() == suit)
-				return m_hand[i];
+			if (m_hand[it].GetSuit() == suit)
+				return m_hand[it];
 		}
+		// Option 2
+		/*for (const auto& it : m_hand)
+		{
+			if (it.GetSuit() == suit)
+				return it;
+		}*/
 	}
 	friend std::ostream operator<<(std::ostream& os, const Player& player) // Prints player's id and hand
 	{
@@ -61,6 +70,6 @@ public:
 	void SortCards() // Sorts cards in suits and from highest to lowest value
 	// Suit Sort: HEART -> DIAMOND -> SPADE -> CLUB
 	{
-		// REMAINS
+		
 	}
 };

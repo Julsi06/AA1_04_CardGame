@@ -1,5 +1,6 @@
 #pragma once
 #include "Suit.h"
+#include <string>
 class Card
 {
 private:
@@ -9,8 +10,8 @@ public:
 	// Constructor: initializes the values in each card
 	Card(Suit suit, int value)
 	{
-		suit = m_suit;
-		value = m_value;
+		m_suit = suit;
+		m_value = value;
 	}
 	int GetValue() const
 	{
@@ -21,9 +22,8 @@ public:
 		return m_suit;
 	}
 	// Compares if 2 cards are the same
-	bool operator==(Card& card)
+	bool operator==(const Card& other)
 	{
-		return m_suit == card.m_suit && m_value == card.m_value;
+		return m_suit == other.m_suit && m_value == other.m_value;
 	}
-
 };
