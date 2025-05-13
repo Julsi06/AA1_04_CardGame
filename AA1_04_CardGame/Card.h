@@ -1,6 +1,7 @@
 #pragma once
 #include "Suit.h"
 #include <string>
+#include <iostream>
 class Card
 {
 private:
@@ -22,8 +23,47 @@ public:
 		return m_suit;
 	}
 	// Compares if 2 cards are the same
-	bool operator==(const Card& other)
+	bool operator==(const Card& other) const
 	{
 		return m_suit == other.m_suit && m_value == other.m_value;
 	}
 };
+
+inline std::ostream& operator<<(std::ostream& os, const Card& card)
+{
+	std::string valueStr;
+	switch (card.GetValue()) {
+	case 11: 
+		valueStr = "Jack"; 
+		break;
+	case 12: 
+		valueStr = "Queen"; 
+		break;
+	case 13: 
+		valueStr = "King"; 
+		break;
+	default: 
+		valueStr = std::to_string(card.GetValue()); 
+		break;
+	}
+
+	std::string suitStr;
+	switch (card.GetSuit()) 
+	{
+	case Suit::HEART: 
+		suitStr = "HEART"; 
+		break;
+	case Suit::DIAMOND: 
+		suitStr = "DIAMOND"; 
+		break;
+	case Suit::SPADE: 
+		suitStr = "SPADE"; 
+		break;
+	case Suit::CLUB: 
+		suitStr = "CLUB"; 
+		break;
+	}
+
+	os << valueStr << " of " << suitStr;
+	return os;
+}

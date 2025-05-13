@@ -59,20 +59,15 @@ public:
 	}
 	void PrintDiscarded() const // Prints the last discarded card
 	{
-		if (m_discarded.empty()) std::cout << "No discarded cards" << std::endl;
-		std::cout << "Last card discarded:" << std::endl;
-		// Gets the information of the last discarded card
-		Card lastDiscardedCard = m_discarded.top();
-		int cardValue = lastDiscardedCard.GetValue();
-		std::cout << "Value: " << cardValue << ", Suit: ";
-		Suit cardSuit = lastDiscardedCard.GetSuit();
-		switch (cardSuit)
+		if (m_discarded.empty())
 		{
-		case Suit::HEART: std::cout << "HEART";
-		case Suit::DIAMOND: std::cout << "DIAMOND";
-		case Suit::SPADE: std::cout << "SPADE";
-		case Suit::CLUB: std::cout << "CLUB";
-		default: std::cout << "UNKNOWN";
+			std::cout << "No discarded cards" << std::endl;
+			return;
 		}
-	}
+		std::cout << "Last card discarded: ";
+		// Obtains last discarded card
+		Card lastDiscardedCard = m_discarded.top();
+		// We use the << operator to print the card
+		std::cout << lastDiscardedCard << std::endl;
+	}	
 };

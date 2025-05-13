@@ -3,6 +3,8 @@
 #include <vector>
 #include <algorithm>
 #include <iostream>
+#include <string>
+
 class Player
 {
 private:
@@ -20,56 +22,51 @@ private:
 		default: return 0;
 		}
 	}
-	bool GetOrderCards(const Card& card1, const Card& card2) // Returns the card either by suit priority or by highest value
+	bool CompareCards(const Card& card1, const Card& card2) const // Returns the card either by suit priority or by highest value
 	{
 		if (GetSuitRank(card1.GetSuit()) != GetSuitRank(card2.GetSuit()))
 			return GetSuitRank(card1.GetSuit()) > GetSuitRank(card2.GetSuit());
 		return card1.GetValue() > card2.GetValue();
 	}
 public:
-	void InsertCard(Card card) // Inserts card in player's hand
+	Player(const std::string& id = "Player") : m_id(id) {} // Constructor: initializes the player's id
+	
+	void InsertCard(const Card& card) // Inserts card in player's hand
 	{
 		// it is incremented until the position is end()
 		auto it = m_hand.begin();
-		// Compares the card at that position with the card referenced as a parameter, and checks which one is of highest value
-		while (it != m_hand.end() && GetOrderCards(*it, card))
+		while (it != m_hand.end() && CompareCards(*it, card))
 		{
 			++it;
 		}
 		// Places said card at said position (in this case, at the end)
 		m_hand.insert(it, card);
 	}
-	Card GetCard() const // Returns random card
+	Card GetRandomCard() const // Returns random card
 	{
-		auto it = m_hand.begin();
-		int randomCardIndex = rand() % m_hand.size();
-		// Moves iterator until it reaches the randomCardIndex position, the returns the value
-		std::advance(it, randomCardIndex);
-		return *it;
+		if (m_hand.empty()) throw std::runtime_error("Hand is empty");
+		int index = rand() % m_hand.size();
+		return m_hand[index];
 	}
-	Card GetCard(const Suit& suit) // Returns the card with highest value of said suit
+	Card GetCardBySuit(Suit suit) // Returns the card with highest value of said suit
 	{
 		// Goes through each element of the vector
-		// Option 1
-		for (auto it = 0;it < m_hand.size();++it)
-		{
-			if (m_hand[it].GetSuit() == suit)
-				return m_hand[it];
-		}
-		// Option 2
-		/*for (const auto& it : m_hand)
-		{
-			if (it.GetSuit() == suit)
-				return it;
-		}*/
+		for (const auto& card : m_hand)
+			if (card.GetSuit() == suit)
+				return card;
+		throw std::runtime_error("No card with that suit");
 	}
-	friend std::ostream operator<<(std::ostream& os, const Player& player) // Prints player's id and hand
+	void SortCards()
 	{
-		
+		std::sort(m_hand.begin(), m_hand.end(),
+			[&](const Card& a, const Card& b) { return CompareCards(a, b); });
 	}
-	void SortCards() // Sorts cards in suits and from highest to lowest value
-	// Suit Sort: HEART -> DIAMOND -> SPADE -> CLUB
+
+	friend std::ostream& operator<<(std::ostream& os, const Player& player)
 	{
-		
+		os << player.m_id << "'s hand:\n";
+		for (const auto& card : player.m_hand)
+			os << "  " << card << '\n';
+		return os;
 	}
 };

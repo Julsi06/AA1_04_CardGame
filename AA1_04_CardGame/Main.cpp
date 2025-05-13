@@ -11,7 +11,7 @@ int main()
 
 	Game game(4);
 
-	std::cout << "Initial hands: " << randomPlayers << std::endl;
+	std::cout << "Initial hand: " << randomPlayers << std::endl;
 	
 	Card card = game.GetNewCard();
 
