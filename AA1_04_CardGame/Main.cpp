@@ -6,15 +6,22 @@
 int main()
 {
 	srand(time(NULL));
+	bool gameloop = true;
+	int numPlayers;
+	std::cout << "Enter the number of players: ";
+	std::cin >> numPlayers;
+	std::cout << std::endl;
 
-	int randomPlayers = 2 + rand() % 7;
-
-	Game game(4);
-
-	std::cout << "Initial hand: " << randomPlayers << std::endl;
+	while (gameloop)
+	{
+		Game game();
+	}
 	
-	Card card = game.GetNewCard();
 
-	game.DiscardCard(card);
-	game.PrintDiscarded();
+	// std::cout << "Initial hand: " << randomPlayers << std::endl;
+	
+	// Card card = game.GetNewCard();
+
+	//game.DiscardCard(card);
+	//game.PrintDiscarded();
 }
